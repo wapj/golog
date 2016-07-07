@@ -46,9 +46,14 @@ func SetLevel(level string) {
 	Logger.level = getLevelFromName(strings.ToUpper(level))
 }
 
-func SetLogger(level string, pLogger *log.Logger ){
+
+func SetLevelAndLogger(level string, l *log.Logger ){
 	var lvl int = getLevelFromName(strings.ToUpper(level))
-	Logger = &logger{lvl, pLogger}
+	Logger = &logger{lvl, l}
+}
+
+func SetLogger(l *log.Logger) {
+	Logger.l = l
 }
 
 func getCallerInfo(depth int) *CallerInfo {
@@ -76,6 +81,7 @@ func getLevelName(level int) string {
 	}
 }
 
+
 func getLevelFromName(level string) int {
 	switch level {
 	case "FATAL":
@@ -88,6 +94,10 @@ func getLevelFromName(level string) int {
 		return INFO
 	case "DEBUG":
 		return DEBUG
+	case "TEST":
+		return DEBUG
+	case "RELEASE":
+		return INFO
 	default:
 		return ERROR
 	}
@@ -102,7 +112,6 @@ func getPrefix(level string) string {
 		caller.FuncName}
 
 	return strings.Join(s, " ")
-
 }
 
 func (l *logger)Log(level int, v ...interface{}){

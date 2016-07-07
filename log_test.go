@@ -24,13 +24,13 @@ func TestLogger_Debug(t *testing.T) {
 	Debugf("%d test", 10)
 
 	// initialize Logger
-	SetLogger("debug", getTesLogger())
-
+	SetLevel("debug")
+	SetLogger(getTesLogger())
 	// and test again it does work
 	Debug("TEST Debug")
 	Debugf("%d test", 10)
 
-	SetLogger("warn", getTesLogger())
+	SetLevelAndLogger("warn", getTesLogger())
 }
 
 

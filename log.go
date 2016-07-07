@@ -22,18 +22,6 @@ type logger struct {
 	l *log.Logger
 }
 
-type LoggerAPI interface {
-	Debug(v ...interface{})
-	Info(v ...interface{})
-	Warn(v ...interface{})
-	Error(v ...interface{})
-	Fatal(v ...interface{})
-	Debugf(msg string, v ...interface{})
-	Infof(msg string, v ...interface{})
-	Warnf(msg string, v ...interface{})
-	Errorf(msg string, v ...interface{})
-	Fatalf(msg string, v ...interface{})
-}
 
 type CallerInfo struct {
 	FileName string
@@ -50,18 +38,15 @@ const (
 	DEBUG
 )
 
-
 var (
-	Logger *logger
+	Logger *logger = &logger{WARN, log.New(os.Stderr, "", 0)}
 )
 
-func init() {
-	Logger = &logger{WARN, log.New(os.Stderr, "", 0)}
+func SetLevel(level string) {
+	Logger.level = getLevelFromName(strings.ToUpper(level))
 }
 
-var _ LoggerAPI = *Logger // just use for golog.Debug(msg) and so on.
-
-func (l *logger) SetLogger(level string, pLogger *log.Logger ){
+func SetLogger(level string, pLogger *log.Logger ){
 	var lvl int = getLevelFromName(strings.ToUpper(level))
 	Logger = &logger{lvl, pLogger}
 }
@@ -131,44 +116,3 @@ func (l *logger)Logf(level int, msg string, v ...interface{}) {
 		l.l.Print(getPrefix(getLevelName(level)), " ", fmt.Sprintf(msg, v...))
 	}
 }
-
-func (l *logger)Debug(v ...interface{}) {
-	l.Log(DEBUG, v...)
-}
-
-func (l *logger)Info(v ...interface{}) {
-	l.Log(INFO, v...)
-}
-
-func (l *logger)Warn(v ...interface{}) {
-	l.Log(WARN, v...)
-}
-
-func (l *logger)Error(v ...interface{}) {
-	l.Log(ERROR, v...)
-}
-
-func (l *logger)Fatal(v ...interface{}) {
-	l.Log(FATAL, v...)
-}
-
-func (l *logger)Debugf(msg string, v ...interface{}) {
-	l.Logf(DEBUG, msg, v...)
-}
-
-func (l *logger)Infof(msg string, v ...interface{}) {
-	l.Logf(INFO, msg, v...)
-}
-
-func (l *logger)Warnf(msg string, v ...interface{}) {
-	l.Logf(WARN, msg, v...)
-}
-
-func (l *logger)Errorf(msg string, v ...interface{}) {
-	l.Logf(ERROR, msg, v...)
-}
-
-func (l *logger)Fatalf(msg string, v ...interface{}) {
-	l.Logf(FATAL, msg, v...)
-}
-

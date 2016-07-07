@@ -20,15 +20,17 @@ func getTesLogger() *log.Logger{
 
 func TestLogger_Debug(t *testing.T) {
 	// doesn't print cause default logging level is ERROR
-	Logger.Debug("TEST Debug")
-	Logger.Debugf("%d test", 10)
+	Debug("TEST Debug")
+	Debugf("%d test", 10)
 
 	// initialize Logger
-	Logger.SetLogger("debug", getTesLogger())
+	SetLogger("debug", getTesLogger())
 
 	// and test again it does work
-	Logger.Debug("TEST Debug")
-	Logger.Debugf("%d test", 10)
+	Debug("TEST Debug")
+	Debugf("%d test", 10)
+
+	SetLogger("warn", getTesLogger())
 }
 
 

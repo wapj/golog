@@ -22,6 +22,26 @@ type logger struct {
 	l *log.Logger
 }
 
+type LoggerAPI interface {
+	Debug(v ...interface{})
+	Info(v ...interface{})
+	Warn(v ...interface{})
+	Error(v ...interface{})
+	Fatal(v ...interface{})
+	Debugf(msg string, v ...interface{})
+	Infof(msg string, v ...interface{})
+	Warnf(msg string, v ...interface{})
+	Errorf(msg string, v ...interface{})
+	Fatalf(msg string, v ...interface{})
+}
+
+type CallerInfo struct {
+	FileName string
+	FilePath string
+	FuncName string
+	LineNo	int
+}
+
 const (
 	FATAL = 50 - 10 * iota
 	ERROR
@@ -30,16 +50,12 @@ const (
 	DEBUG
 )
 
+
 var (
 	Logger *logger = &logger{ERROR, log.New(os.Stderr, "", 0)}
+	_ LoggerAPI = Logger // just use for golog.Debug(msg) and so on.
 )
 
-type CallerInfo struct {
-	FileName string
-	FilePath string
-	FuncName string
-	LineNo	int
-}
 
 func (l *logger) SetLogger(level string, pLogger *log.Logger ){
 	var lvl int = getLevelFromName(strings.ToUpper(level))

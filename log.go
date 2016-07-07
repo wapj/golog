@@ -52,10 +52,14 @@ const (
 
 
 var (
-	Logger *logger = &logger{ERROR, log.New(os.Stderr, "", 0)}
-	_ LoggerAPI = Logger // just use for golog.Debug(msg) and so on.
+	Logger *logger
 )
 
+func init() {
+	Logger = &logger{WARN, log.New(os.Stderr, "", 0)}
+}
+
+var _ LoggerAPI = *Logger // just use for golog.Debug(msg) and so on.
 
 func (l *logger) SetLogger(level string, pLogger *log.Logger ){
 	var lvl int = getLevelFromName(strings.ToUpper(level))

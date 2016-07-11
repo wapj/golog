@@ -122,6 +122,6 @@ func (l *logger)Log(level int, v ...interface{}){
 
 func (l *logger)Logf(level int, msg string, v ...interface{}) {
 	if l.level <= level {
-		l.l.Print(getPrefix(getLevelName(level)), ">> ", fmt.Sprintf(msg, v...))
+		l.l.Print(getPrefix(getLevelName(level)), " >> ", fmt.Sprintf(msg, v...))
 	}
 }

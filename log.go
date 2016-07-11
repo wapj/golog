@@ -116,12 +116,12 @@ func getPrefix(level string) string {
 
 func (l *logger)Log(level int, v ...interface{}){
 	if l.level <= level {
-		l.l.Println(getPrefix(getLevelName(level)),	fmt.Sprint(v...))
+		l.l.Println(getPrefix(getLevelName(level)), ">>", fmt.Sprint(v...))
 	}
 }
 
 func (l *logger)Logf(level int, msg string, v ...interface{}) {
 	if l.level <= level {
-		l.l.Print(getPrefix(getLevelName(level)), " ", fmt.Sprintf(msg, v...))
+		l.l.Print(getPrefix(getLevelName(level)), ">> ", fmt.Sprintf(msg, v...))
 	}
 }
